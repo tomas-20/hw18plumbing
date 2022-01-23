@@ -33,19 +33,21 @@ int main() {
   if (fork()) {
     close(parent_to_child[READ]);
     close(child_to_parent[WRITE]);
-
-    get_input(line, sizeof line);
-    write(parent_to_child[WRITE], line, sizeof line);
-    read(child_to_parent[READ], line, sizeof line);
-    printf("[%s]\n", line);
+    while (1) {
+      get_input(line, sizeof line);
+      write(parent_to_child[WRITE], line, sizeof line);
+      read(child_to_parent[READ], line, sizeof line);
+      printf("[%s]\n", line);
+    }
   }
   else {
     close(parent_to_child[WRITE]);
     close(child_to_parent[READ]);
-
-    read(parent_to_child[READ], line, sizeof line);
-    capitalize(line);
-    write(child_to_parent[WRITE], line, sizeof line);
+    while (1) {
+      read(parent_to_child[READ], line, sizeof line);
+      capitalize(line);
+      write(child_to_parent[WRITE], line, sizeof line);
+    }
   }
   return 0;
 }
